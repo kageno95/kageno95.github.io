@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            word-break: break-word;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>TikTok Downloader</h1>
+    <div class="container">
+        <label for="tiktok-url">Enter TikTok Video URL:</label>
+        <input type="text" id="tiktok-url" placeholder="https://www.tiktok.com/@username/video/123456789">
+        <button id="download-btn">Download</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const url = document.getElementById('tiktok-url').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!url) {
+                resultDiv.innerHTML = '<p class="error">Please enter a valid TikTok URL.</p>';
+                return;
+            }
+
+            // API TikTok Downloader dari RapidAPI
+            const apiUrl = 'https://tiktok-scrapper-videos-music-challenges-downloader.p.rapidapi.com/user/id/7024281421016237058/followers';
+            const apiKey = '7a5a3a24a4mshc8821dbe4deaf10p19bc24jsn1bee0fb6ef29';
+
+            resultDiv.innerHTML = 'Fetching data...';
+
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-host': 'tiktok-scrapper-videos-music-challenges-downloader.p.rapidapi.com',
+                    'x-rapidapi-key': apiKey
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data) {
+                    resultDiv.innerHTML = `
+                        <h3>Data Fetched Successfully</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.innerHTML = '<p class="error">Failed to fetch data. Please try again later.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
